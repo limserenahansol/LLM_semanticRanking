@@ -1,5 +1,5 @@
 {
-  "fixture": "/Users/hansollim/Downloads/files/LLM_semanticRanking/fixtures/ranking_eval_sample.json",
+  "fixture": "fixtures/ranking_eval_sample.json",
   "k": 5,
   "cross_encoder_top_k": 0,
   "legacy_model": "all-MiniLM-L6-v2",

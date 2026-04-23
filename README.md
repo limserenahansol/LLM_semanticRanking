@@ -12,33 +12,69 @@ Colab-export script: **`research_aggregator_group3.py`** — multi-source scrapi
 
 ---
 
-## Ranking benchmark (legacy vs hybrid)
+## Ranking benchmark & evaluation (legacy vs hybrid)
 
-To **measure** whether the new ranker puts relevant hits higher than the README baseline, use the standalone tools (they do **not** run the Colab `pip install` cell):
+### Where this lives on GitHub (repo root)
 
-| File | Role |
-|------|------|
-| [ranking_core.py](./ranking_core.py) | `rank_by_relevance_legacy` (MiniLM, title+snippet) vs `rank_by_relevance_hybrid` (BGE + BM25 + keyword [+ CE]) |
-| [ranking_metrics.py](./ranking_metrics.py) | P@k, R@k, NDCG@k, MRR, MAP |
-| [ranking_benchmark.py](./ranking_benchmark.py) | CLI: run both rankers on a JSON fixture and print Δ metrics |
-| [fixtures/ranking_eval_sample.json](./fixtures/ranking_eval_sample.json) | Example topics + graded relevance labels |
-| [requirements-benchmark.txt](./requirements-benchmark.txt) | `pip install -r` for evaluation only |
+| Path | Purpose |
+|------|---------|
+| [`ranking_core.py`](./ranking_core.py) | Standalone rankers: **legacy** (MiniLM, title+snippet) vs **hybrid** (BGE + BM25 + keyword, optional CE) |
+| [`ranking_metrics.py`](./ranking_metrics.py) | IR metrics: P@k, R@k, NDCG@k, MRR, MAP |
+| [`ranking_benchmark.py`](./ranking_benchmark.py) | CLI: run both rankers on the same fixture, print per-query and mean metrics |
+| [`fixtures/ranking_eval_sample.json`](./fixtures/ranking_eval_sample.json) | Small **toy** benchmark: 2 queries, graded relevance labels |
+| [`requirements-benchmark.txt`](./requirements-benchmark.txt) | Python deps for evaluation only (not the Colab installer cell) |
+| [`results/benchmark_results.json`](./results/benchmark_results.json) | Last checked-in machine-readable summary |
+| [`results/benchmark_run_log.txt`](./results/benchmark_run_log.txt) | Console log for that run |
+| [`research_aggregator_RANKING_EVAL_KR.md`](./research_aggregator_RANKING_EVAL_KR.md) | Korean walkthrough of the benchmark |
+
+These files sit alongside [`research_aggregator_group3.py`](./research_aggregator_group3.py); they **do not** auto-run when you open the Colab script.
+
+---
+
+### English — What the benchmark does
+
+1. **Same candidate pool** for each query: `fixtures/ranking_eval_sample.json` lists `topic`, `results[]`, and `relevance` (URL → grade 0/1/2…).
+2. **Two rankers** score and sort that pool independently:
+   - **Legacy:** `all-MiniLM-L6-v2`, document text = title + snippet (README baseline).
+   - **Hybrid:** `BGE` family (see env vars below) + BM25 + keyword + RRF; cross-encoder off by default in the checked-in run.
+3. **Metrics** answer “are relevant documents near the top?” **P@k / R@k** (binary hits in top‑k), **NDCG@k** (graded order quality), **MRR** (rank of first relevant), **MAP**.
+
+**How to read Δ (hybrid − legacy):** positive Δ on `NDCG@k` or `P@k` means hybrid ranked labeled relevant items higher for that query. The script also prints how many queries hybrid “wins” on `NDCG@k`.
+
+**Checked-in example result (honest read):** the saved run used **`BAAI/bge-small-en-v1.5`** for speed (`RANKING_EVAL_HYBRID_MODEL`), **not** the full pipeline default `bge-base`, and only **two toy queries**. On that run, **P@5, R@5, and MRR were identical** between legacy and hybrid (both already put all relevant URLs in the top‑5), while **mean NDCG@5** was slightly **lower** for hybrid (~**0.97** vs **1.0**) because graded relevance cares about **ordering among highly relevant items**—a small reordering lowers NDCG even when P@k is unchanged. **`ndcg_hybrid_wins`: 0 / 2** in [`results/benchmark_results.json`](./results/benchmark_results.json).
+
+**Takeaway:** this commit proves the **evaluation harness works** and documents a **reproducible** comparison; it does **not** claim hybrid is universally “much better” on this tiny set. For a stronger claim, add more labeled queries from real scrapes, use **`BAAI/bge-base-en-v1.5`** (and optionally `--ce`), and report mean ± variance or paired tests.
 
 **Quick start**
 
 ```bash
 pip install -r requirements-benchmark.txt
 python ranking_benchmark.py
-python ranking_benchmark.py --k 10 --json-out benchmark_results.json
-# Smaller / faster hybrid model (optional):
-RANKING_EVAL_HYBRID_MODEL=BAAI/bge-small-en-v1.5 python ranking_benchmark.py
+python ranking_benchmark.py --k 10 --json-out results/benchmark_results.json
+# Faster smoke test (smaller hybrid model):
+RANKING_EVAL_HYBRID_MODEL=BAAI/bge-small-en-v1.5 python ranking_benchmark.py --json-out results/benchmark_results.json
 ```
 
-**Fixture format:** JSON object with `queries`: each item has `topic`, `results` (same shape as scraper items: `url`, `title`, `snippet`, optional `authors`, `venue`, `source`), and `relevance`: map from `url` to grade `0` (irrelevant), `1`, `2`, … for NDCG.
+---
 
-**Interpreting output:** Positive **Δ** on `NDCG@k` / `P@k` means the **hybrid** list ranks labeled relevant documents higher than **legacy** on that query. The script also reports how many queries hybrid “wins” on NDCG@k. This is **not** a substitute for a large human-labeled corpus—add your own `fixtures/*.json` from real scrape exports for stronger evidence.
+### 한국어 — 벤치마크와 평가 결과 설명
 
-**Checked-in example run:** see [`results/benchmark_results.json`](./results/benchmark_results.json) and [`results/benchmark_run_log.txt`](./results/benchmark_run_log.txt) (toy fixture, `bge-small` hybrid for a fast reproducible run).
+**GitHub 저장소 루트에 추가된 위치**는 위 표와 같습니다. 요약하면: 랭킹 비교 코드(`ranking_*.py`), 예시 라벨(`fixtures/`), 실행 결과(`results/`), 한국어 상세 문서(`research_aggregator_RANKING_EVAL_KR.md`)입니다.
+
+**벤치마크가 하는 일**
+
+1. 같은 후보 목록(`results` 배열)에 대해 **구(legacy)** 와 **신(hybrid)** 랭커를 각각 돌립니다.  
+2. **Legacy:** `all-MiniLM-L6-v2`, 문서 = 제목+스니펫.  
+3. **Hybrid:** BGE 계열 + BM25 + 키워드 + RRF (저장된 결과에서는 CE 끔, 하이브리드 모델은 속도용 **`bge-small`**).  
+4. **지표:** 상위 k개에 정답이 얼마나 모였는지(**P@k, R@k**), 등급까지 고려한 순위 품질(**NDCG@k**), 첫 정답 위치(**MRR**), **MAP**.
+
+**체크인된 `results/benchmark_results.json` 결과를 어떻게 볼까**
+
+- **짧은 예시(쿼리 2개)** 이라서 “실전 전체 성능”을 대표하지는 않습니다.  
+- 그 실행에서는 **P@5, R@5, MRR은 legacy와 hybrid가 동일**했습니다(둘 다 관련 URL을 상위 5안에 넣음).  
+- **NDCG@5 평균**만 보면 hybrid가 약 **0.97**, legacy가 **1.0**으로, hybrid가 **살짝 낮게** 나왔습니다. 이유는 NDCG가 **등급 2 vs 1** 문서의 **상대 순서**까지 반영하기 때문입니다. 상위권 안에서 순서만 바뀌어도 P@k는 같아도 NDCG는 줄 수 있습니다. **`ndcg_hybrid_wins`: 0 / 2** 입니다.
+
+**정리:** 이 커밋의 목적은 “**평가 파이프라인이 돌아가고, 결과가 파일로 남는다**”는 것을 보여 주는 것이지, **작은 샘플 + small 모델**만으로 hybrid가 항상 압도한다고 주장하는 것은 아닙니다. 더 설득력 있게 하려면 **실제 스크랩 풀**을 JSON으로 저장해 라벨을 늘리고, 파이프라인과 동일하게 **`bge-base`**(필요 시 `--ce`)로 다시 측정하면 됩니다.
 
 ---
 
