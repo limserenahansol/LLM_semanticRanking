@@ -8,6 +8,35 @@ Colab-export script: **`research_aggregator_group3.py`** — multi-source scrapi
 |-----|----------|----------|
 | [research_aggregator_RANKING_UPDATE_KR.md](./research_aggregator_RANKING_UPDATE_KR.md) | Korean | BGE/BM25/RRF/CE, fallbacks, tuning |
 | [research_aggregator_WORKFLOW_README_KR.md](./research_aggregator_WORKFLOW_README_KR.md) | Korean | Full pipeline, Mermaid diagram |
+| [research_aggregator_RANKING_EVAL_KR.md](./research_aggregator_RANKING_EVAL_KR.md) | Korean | 벤치마크로 구버전 vs 하이브리드 랭킹 평가 |
+
+---
+
+## Ranking benchmark (legacy vs hybrid)
+
+To **measure** whether the new ranker puts relevant hits higher than the README baseline, use the standalone tools (they do **not** run the Colab `pip install` cell):
+
+| File | Role |
+|------|------|
+| [ranking_core.py](./ranking_core.py) | `rank_by_relevance_legacy` (MiniLM, title+snippet) vs `rank_by_relevance_hybrid` (BGE + BM25 + keyword [+ CE]) |
+| [ranking_metrics.py](./ranking_metrics.py) | P@k, R@k, NDCG@k, MRR, MAP |
+| [ranking_benchmark.py](./ranking_benchmark.py) | CLI: run both rankers on a JSON fixture and print Δ metrics |
+| [fixtures/ranking_eval_sample.json](./fixtures/ranking_eval_sample.json) | Example topics + graded relevance labels |
+| [requirements-benchmark.txt](./requirements-benchmark.txt) | `pip install -r` for evaluation only |
+
+**Quick start**
+
+```bash
+pip install -r requirements-benchmark.txt
+python ranking_benchmark.py
+python ranking_benchmark.py --k 10 --json-out benchmark_results.json
+# Smaller / faster hybrid model (optional):
+RANKING_EVAL_HYBRID_MODEL=BAAI/bge-small-en-v1.5 python ranking_benchmark.py
+```
+
+**Fixture format:** JSON object with `queries`: each item has `topic`, `results` (same shape as scraper items: `url`, `title`, `snippet`, optional `authors`, `venue`, `source`), and `relevance`: map from `url` to grade `0` (irrelevant), `1`, `2`, … for NDCG.
+
+**Interpreting output:** Positive **Δ** on `NDCG@k` / `P@k` means the **hybrid** list ranks labeled relevant documents higher than **legacy** on that query. The script also reports how many queries hybrid “wins” on NDCG@k. This is **not** a substitute for a large human-labeled corpus—add your own `fixtures/*.json` from real scrape exports for stronger evidence.
 
 ---
 

@@ -1,0 +1,145 @@
+{
+  "description": "Toy benchmark: same candidate pool for legacy vs hybrid. Labels are grades 0–2 (NDCG); binary relevant = grade >= 1.",
+  "queries": [
+    {
+      "topic": "transformer self-attention neural machine translation",
+      "results": [
+        {
+          "url": "https://example.org/paper/attention",
+          "title": "Attention Is All You Need",
+          "snippet": "The dominant sequence transduction models are based on encoder-decoder RNNs. We propose the Transformer based solely on attention mechanisms.",
+          "authors": "Ashish Vaswani",
+          "venue": "NeurIPS",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/paper/bert",
+          "title": "BERT: Pre-training of Deep Bidirectional Transformers",
+          "snippet": "We introduce BERT from unlabeled text by jointly conditioning on left and right context. Masked language model for NLP.",
+          "authors": "Jacob Devlin",
+          "venue": "NAACL",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/paper/cats",
+          "title": "Nutrition of domestic cats and obesity trends",
+          "snippet": "Feline diet survey across veterinary clinics. No relation to NLP or transformers.",
+          "authors": "Jane Doe",
+          "venue": "Vet Journal",
+          "source": "web"
+        },
+        {
+          "url": "https://example.org/paper/stock",
+          "title": "Stock market volatility forecasting with ARIMA",
+          "snippet": "Time series econometrics. Baseline ARIMA compared to GARCH for S&P returns.",
+          "authors": "John Smith",
+          "venue": "Finance Letters",
+          "source": "web"
+        },
+        {
+          "url": "https://example.org/paper/scaling",
+          "title": "Scaling Laws for Neural Language Models",
+          "snippet": "We study empirical scaling laws for loss versus model size, dataset size, and compute for transformers.",
+          "authors": "Kaplan et al.",
+          "venue": "arXiv",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/paper/cnn",
+          "title": "ImageNet Classification with Deep Convolutional Networks",
+          "snippet": "We trained a large deep CNN to classify 1.2M images. Convolutional nets for vision.",
+          "authors": "Krizhevsky",
+          "venue": "NeurIPS",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/paper/longformer",
+          "title": "Longformer: The Long-Document Transformer",
+          "snippet": "Transformer that scales linearly with sequence length for character modeling and encoding long documents.",
+          "authors": "Iz Beltagy",
+          "venue": "arXiv",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/paper/recipe",
+          "title": "Best chocolate chip cookie recipe",
+          "snippet": "Butter, sugar, flour ratios for chewy cookies. Baking tips unrelated to machine translation.",
+          "authors": "Chef Lee",
+          "venue": "Cooking Blog",
+          "source": "web"
+        }
+      ],
+      "relevance": {
+        "https://example.org/paper/attention": 2,
+        "https://example.org/paper/bert": 2,
+        "https://example.org/paper/scaling": 1,
+        "https://example.org/paper/longformer": 2,
+        "https://example.org/paper/cnn": 0,
+        "https://example.org/paper/cats": 0,
+        "https://example.org/paper/stock": 0,
+        "https://example.org/paper/recipe": 0
+      }
+    },
+    {
+      "topic": "dopamine synaptic plasticity nucleus accumbens reward learning",
+      "results": [
+        {
+          "url": "https://example.org/neuro/d1",
+          "title": "D1 receptor signaling modulates long-term potentiation in nucleus accumbens",
+          "snippet": "Optogenetic stimulation of D1-MSNs paired with presynaptic activation induced LTP. Implications for reward-related learning.",
+          "authors": "Yagishita et al.",
+          "venue": "Nature Neuroscience",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/neuro/weather",
+          "title": "Seasonal precipitation patterns in the Pacific Northwest",
+          "snippet": "Climate variability and rainfall. No neuroscience content.",
+          "authors": "Met Office",
+          "venue": "Climate Reports",
+          "source": "web"
+        },
+        {
+          "url": "https://example.org/neuro/phasic",
+          "title": "Phasic dopamine release encodes reward prediction errors",
+          "snippet": "Voltammetry in behaving animals shows dopamine transients consistent with RPE models during appetitive conditioning.",
+          "authors": "Schultz",
+          "venue": "Annual Review Neuroscience",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/neuro/stocks2",
+          "title": "Cryptocurrency market microstructure",
+          "snippet": "Order book dynamics and high-frequency trading strategies.",
+          "authors": "Algo Trader",
+          "venue": "FinTech",
+          "source": "web"
+        },
+        {
+          "url": "https://example.org/neuro/astrocyte",
+          "title": "Astrocyte regulation of synaptic glutamate during sleep",
+          "snippet": "Gliotransmission and slow oscillations. Limited focus on dopamine or accumbens.",
+          "authors": "Smith",
+          "venue": "Glia",
+          "source": "scholar"
+        },
+        {
+          "url": "https://example.org/neuro/stdp",
+          "title": "Spike-timing-dependent plasticity in mesolimbic dopamine pathways",
+          "snippet": "STDP rules at glutamatergic synapses onto VTA dopamine neurons and accumbens projection neurons after reward pairing.",
+          "authors": "Lee",
+          "venue": "Journal of Neuroscience",
+          "source": "scholar"
+        }
+      ],
+      "relevance": {
+        "https://example.org/neuro/d1": 2,
+        "https://example.org/neuro/phasic": 2,
+        "https://example.org/neuro/stdp": 2,
+        "https://example.org/neuro/astrocyte": 1,
+        "https://example.org/neuro/weather": 0,
+        "https://example.org/neuro/stocks2": 0
+      }
+    }
+  ]
+}

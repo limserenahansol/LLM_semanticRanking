@@ -1,0 +1,5 @@
+# Optional: benchmark legacy vs hybrid ranking (not required for Colab scraper only)
+numpy>=1.20
+torch>=2.0
+sentence-transformers>=2.2.0
+rank-bm25>=0.2.2
