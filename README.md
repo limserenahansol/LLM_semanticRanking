@@ -38,6 +38,8 @@ RANKING_EVAL_HYBRID_MODEL=BAAI/bge-small-en-v1.5 python ranking_benchmark.py
 
 **Interpreting output:** Positive **Δ** on `NDCG@k` / `P@k` means the **hybrid** list ranks labeled relevant documents higher than **legacy** on that query. The script also reports how many queries hybrid “wins” on NDCG@k. This is **not** a substitute for a large human-labeled corpus—add your own `fixtures/*.json` from real scrape exports for stronger evidence.
 
+**Checked-in example run:** see [`results/benchmark_results.json`](./results/benchmark_results.json) and [`results/benchmark_run_log.txt`](./results/benchmark_run_log.txt) (toy fixture, `bge-small` hybrid for a fast reproducible run).
+
 ---
 
 ## Semantic ranking: what we improved (details)

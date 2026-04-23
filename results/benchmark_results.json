@@ -1,0 +1,75 @@
+{
+  "fixture": "/Users/hansollim/Downloads/files/LLM_semanticRanking/fixtures/ranking_eval_sample.json",
+  "k": 5,
+  "cross_encoder_top_k": 0,
+  "legacy_model": "all-MiniLM-L6-v2",
+  "hybrid_model": "BAAI/bge-small-en-v1.5",
+  "mean_legacy": {
+    "MAP": 1.0,
+    "MRR": 1.0,
+    "NDCG@5": 1.0,
+    "P@5": 0.8,
+    "R@5": 1.0
+  },
+  "mean_hybrid": {
+    "MAP": 0.975,
+    "MRR": 1.0,
+    "NDCG@5": 0.9700471116087748,
+    "P@5": 0.8,
+    "R@5": 1.0
+  },
+  "ndcg_hybrid_wins": 0,
+  "ndcg_ties": 0,
+  "per_query": [
+    {
+      "query_index": 0,
+      "topic": "transformer self-attention neural machine translation",
+      "legacy": {
+        "P@5": 0.8,
+        "R@5": 1.0,
+        "NDCG@5": 1.0,
+        "MRR": 1.0,
+        "MAP": 1.0
+      },
+      "hybrid": {
+        "P@5": 0.8,
+        "R@5": 1.0,
+        "NDCG@5": 0.9604133524599737,
+        "MRR": 1.0,
+        "MAP": 0.95
+      },
+      "delta": {
+        "P@5": 0.0,
+        "R@5": 0.0,
+        "NDCG@5": -0.039586647540026276,
+        "MRR": 0.0,
+        "MAP": -0.050000000000000044
+      }
+    },
+    {
+      "query_index": 1,
+      "topic": "dopamine synaptic plasticity nucleus accumbens reward learning",
+      "legacy": {
+        "P@5": 0.8,
+        "R@5": 1.0,
+        "NDCG@5": 1.0,
+        "MRR": 1.0,
+        "MAP": 1.0
+      },
+      "hybrid": {
+        "P@5": 0.8,
+        "R@5": 1.0,
+        "NDCG@5": 0.9796808707575757,
+        "MRR": 1.0,
+        "MAP": 1.0
+      },
+      "delta": {
+        "P@5": 0.0,
+        "R@5": 0.0,
+        "NDCG@5": -0.020319129242424294,
+        "MRR": 0.0,
+        "MAP": 0.0
+      }
+    }
+  ]
+}

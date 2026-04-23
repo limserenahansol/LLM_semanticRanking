@@ -1,0 +1,28 @@
+/Users/hansollim/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Fixture: /Users/hansollim/Downloads/files/LLM_semanticRanking/fixtures/ranking_eval_sample.json
+Legacy model: all-MiniLM-L6-v2
+Hybrid model: BAAI/bge-small-en-v1.5
+k=5, hybrid cross_encoder_top_k=0
+
+--- Query 1: transformer self-attention neural machine translation ---
+  legacy:  P@5=0.8000  R@5=1.0000  NDCG@5=1.0000  MRR=1.0000  MAP=1.0000
+  hybrid:  P@5=0.8000  R@5=1.0000  NDCG@5=0.9604  MRR=1.0000  MAP=0.9500
+  delta:   P@5=+0.0000  R@5=+0.0000  NDCG@5=-0.0396  MRR=+0.0000  MAP=-0.0500
+
+--- Query 2: dopamine synaptic plasticity nucleus accumbens reward learning ---
+  legacy:  P@5=0.8000  R@5=1.0000  NDCG@5=1.0000  MRR=1.0000  MAP=1.0000
+  hybrid:  P@5=0.8000  R@5=1.0000  NDCG@5=0.9797  MRR=1.0000  MAP=1.0000
+  delta:   P@5=+0.0000  R@5=+0.0000  NDCG@5=-0.0203  MRR=+0.0000  MAP=+0.0000
+
+=== Mean over queries ===
+  MAP: legacy=1.0000  hybrid=0.9750  (Δ=-0.0250)
+  MRR: legacy=1.0000  hybrid=1.0000  (Δ=+0.0000)
+  NDCG@5: legacy=1.0000  hybrid=0.9700  (Δ=-0.0300)
+  P@5: legacy=0.8000  hybrid=0.8000  (Δ=+0.0000)
+  R@5: legacy=1.0000  hybrid=1.0000  (Δ=+0.0000)
+
+=== Hybrid vs legacy on NDCG@5 ===
+  hybrid better: 0/2  |  ties: 0/2  |  legacy better: 2/2
+
+Wrote /Users/hansollim/Downloads/files/LLM_semanticRanking/results/benchmark_results.json
